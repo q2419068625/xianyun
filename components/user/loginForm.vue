@@ -77,12 +77,6 @@ export default {
                         type: "success"
                     });
                     this.$router.push("/")
-                }).catch(reject=>{
-                    // 失败提示
-                    this.$message({
-                        message: "登录失败",
-                        type: "error"
-                    });
                 })
             }
         })

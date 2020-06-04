@@ -6,7 +6,6 @@
         justify="center" 
         align="middle" 
         class="main">
-
             <div class="form-wrapper">
                 <!-- 表单头部tab -->
                 <el-row type="flex" justify="center" class="tabs">
@@ -22,7 +21,7 @@
                 <LoginForm v-if="currentTab == 0"/>
                   
                 <!-- 注册功能组件 -->
-                <!-- <RegisterForm v-if="currentTab == 1"/> -->
+                <RegisterForm v-if="currentTab == 1"/>
             </div>
         </el-row>
     </div>
@@ -30,9 +29,11 @@
 
 <script>
 import LoginForm from '@/components/user/loginForm.vue'
+import RegisterForm from '@/components/user/RegisterForm.vue'
 export default {
     components:{
-          LoginForm
+          LoginForm,
+          RegisterForm
     },
     data(){
         return {

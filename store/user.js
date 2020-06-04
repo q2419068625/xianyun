@@ -22,6 +22,7 @@ export const mutations = {
 }
 
 export const actions = {
+    //登录
     login({commit},data){
         return this.$axios({
             url:'/accounts/login',
@@ -34,5 +35,16 @@ export const actions = {
             commit('setUserInfo',res.data)
             Promise.resolve()
         })
+    },
+    //注册
+    register({commit},props){
+        return this.$axios({
+                url:'/accounts/register',
+                method:'POST',
+                data:props
+                }).then(res=>{
+                //注册成功后跳转登录
+                commit('setUserInfo',res.data)
+            })
     }
 }

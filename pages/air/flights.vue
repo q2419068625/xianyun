@@ -35,6 +35,7 @@
             <!-- 侧边栏 -->
             <div class="aside">
                 <!-- 侧边栏组件 -->
+                <FlightsAside/>
             </div>
         </el-row>
     </section>
@@ -46,6 +47,7 @@ import moment from "moment";
 import flightsItem from "@/components/air/flightsItem.vue"
 import flightsListHead from "@/components/air/flightsListHead.vue"
 import flightsFilters from "@/components/air/flightsFilters.vue"
+import FlightsAside from "@/components/air/flightsAside.vue"
 export default {
     data(){
         return {
@@ -70,7 +72,8 @@ export default {
     components:{
         flightsItem,
         flightsListHead,
-        flightsFilters
+        flightsFilters,
+        FlightsAside
     },
     methods: {
         // 设置dataList数据
@@ -83,7 +86,6 @@ export default {
                 this.total = arr.length;
             }
             this.dataList = this.flightsData.flights.slice(start, end);
-
         },
         //切换条数时触发
         handleSizeChange(value){
@@ -95,19 +97,28 @@ export default {
         handleCurrentChange(value){
             this.pageIndex = value
             this.setDataList()
+        },
+        getData(){
+            this.$axios({
+                url:'airs',
+                params:this.$route.query
+            }).then(res=>{
+                this.flightsData = res.data
+                this.total = res.data.total
+                this.cacheFlightsData = {...res.data}
+                this.pageIndex = 1
+                this.setDataList()
+            })
         }
         
     },
     mounted() {
-        this.$axios({
-            url:'airs',
-            params:this.$route.query
-        }).then(res=>{
-            this.flightsData = res.data
-            this.total = res.data.total
-            this.cacheFlightsData = {...res.data}
-            this.setDataList()
-        })
+        this.getData()
+    },
+    watch: {
+        $route(){
+            this.getData()
+        }
     },
 }
 </script>

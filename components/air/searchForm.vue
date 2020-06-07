@@ -36,7 +36,10 @@
                 <el-date-picker type="date" 
                 placeholder="请选择日期" 
                 style="width: 100%;"
-                @change="handleDate" v-model="form.departDate">
+                @change="handleDate" 
+                v-model="form.departDate"
+                :picker-options="pickerOptions"
+                >
                 </el-date-picker>
             </el-form-item>
             <el-form-item label="">
@@ -71,7 +74,11 @@ export default {
                 {icon: "iconfont iconshuangxiang", name: "往返"}
             ],
             currentTab: 0,
-
+            pickerOptions: {
+                disabledDate(time) {
+                    return time.getTime() < Date.now()- 8.64e7;
+                }
+            }
         }
     },
     methods: {
@@ -187,12 +194,15 @@ export default {
                 }
             })
             if(!flag) return
-
-        this.$router.push({
-            path:'/air/flights',
-            query:this.form
-        })
-           
+            
+             // 添加到本地存储
+             const airs = JSON.parse(localStorage.getItem('airs') || `[]`)
+             airs.push(this.form)
+             localStorage.setItem('airs',JSON.stringify(airs))
+            this.$router.push({
+                path:'/air/flights',
+                query:this.form
+            })
         }
     },
     mounted() {
